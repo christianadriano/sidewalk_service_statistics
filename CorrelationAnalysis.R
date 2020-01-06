@@ -30,7 +30,7 @@ cor.test(x=df$Population,y=df$IDHM,method="kendall")
 
 cor.test(x=df$Population,y=df$Sidewalk_Tickets,method="kendall")
 "RESULT:
- Statistical significant moderate to strong correlation, tau=0.403 
+ Statistical significant moderate correlation, tau=0.403 
 "
 # data:  df$Population and df$Sidewalk_Tickets
 # tau= 0.4032258, T = 348, p-value = 0.0009606

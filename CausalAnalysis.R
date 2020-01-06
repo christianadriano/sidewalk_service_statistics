@@ -15,6 +15,18 @@ df <- data.frame(dataset)
 summary(df)
 df <- df[df$IDHM_Income!=0,]
 
+"
+------------------------------------------------
+Used this for sensitivity analysis by removing
+removing the two largest tickets. Nothing changed.
+
+max_sidewalk_tickets <- max(df$Sidewalk_Tickets)
+df <- df[df$Sidewalk_Tickets!=max_sidewalk_tickets,] #Removed Sé subprefecture
+max_sidewalk_tickets <- max(df$Sidewalk_Tickets)
+df <- df[df$Sidewalk_Tickets!=max_sidewalk_tickets,] #Removed Pinheiros subprefecture
+-----------------------------------------------
+"
+
 df$Population <- scale(df$Population)
 df$IDHM <- scale(df$IDHM)
 df$Sidewalk_Tickets <- scale(df$Sidewalk_Tickets)

@@ -118,3 +118,47 @@ rethinking::compare(m1.IDHM,m1.Population, m1.IDHM.Population,m1.IDHM_Income.Pop
 # m1.IDHM_Income.Population 80.4 17.04  16.6  8.41   5.7   0.00
 # m1.Population             87.8 13.80  24.1 10.83   4.1   0.00
 
+#----------------------------------------------------------
+"Plot the Posterior with corresponding variance (shaded region)"
+
+#Generate simulated input data
+IDHM_seq <- seq( from=min(df$IDHM) , to=max(df$IDHM) , length.out=50 )
+Population_seq <- seq( from=min(df$Population) , to=max(df$Population) , length.out=50 )
+
+#Plot the shade region with the variance
+
+#sample from the posterior distribution, and then compute
+#for each case in the data and sample from the posterior distribution.
+mu <- link(m1.IDHM.Population, data = data.frame(Population=Population_seq,IDHM=IDHM_seq))
+#Compute vectors of means
+mu.mean = apply(mu,2,mean)
+mu.HPDI = apply(mu,2,HPDI, prob=0.89) #mean with highest posterior density interval
+
+#Simulates Sidewalk_Tickets by extracting from the posterior, but now also
+#considers the variance
+sim1.1 <- sim(m1.IDHM.Population, data=list(Population=Population_seq,IDHM=IDHM_seq)) 
+Sidewalk_Tickets.PI = apply(sim1.1,2, PI, prob=0.89) #mean with the percentile intervals
+
+plot(Sidewalk_Tickets ~ Population, df,col=col.alpha(rangi2,0.5)) #plot raw data
+title(paste("m1.IDHM.Population posterior Sidewalk_Tickets ","Population"))
+
+#plot the Map line and interval more visible
+lines(Population_seq,mu.mean)
+
+#plot the shaded region with 89% HPDI
+shade(mu.HPDI,Population_seq)
+
+#plot the shaded region with 89% PI
+shade(Sidewalk_Tickets.PI,Population_seq)
+
+#--------------------------------
+plot(Sidewalk_Tickets ~ IDHM, df,col=col.alpha(rangi2,0.5)) #plot raw data
+title(paste("m1.IDHM.Population posterior Sidewalk_Tickets ","IDHM"))
+#plot the Map line and interval more visible
+lines(IDHM_seq,mu.mean)
+
+#plot the shaded region with 89% HPDI
+shade(mu.HPDI,IDHM_seq)
+
+#plot the shaded region with 89% PI
+shade(Sidewalk_Tickets.PI,IDHM_seq)
